@@ -119,6 +119,7 @@ void inserirElemento()
 {
 	// aloca memoria dinamicamente para o novo elemento
 	NO* novo = (NO*)malloc(sizeof(NO));
+
 	if (novo == NULL)
 	{
 		return;
@@ -134,26 +135,96 @@ void inserirElemento()
 	}
 	else
 	{
-		// procura o final da lista
+		// se nao encontrar dois valores iguais
 		NO* aux = primeiro;
+		while (aux != NULL) {
+			if (aux->valor == novo->valor) {
+				cout << "Valor ja exista na lista. \n";
+				return;
+			}
+			aux = aux->prox;
+		}
+
+		// procura o final da lista
+		aux = primeiro;
 		while (aux->prox != NULL) {
 			aux = aux->prox;
 		}
+
 		aux->prox = novo;
 	}
 }
 
 void excluirElemento()
 {
-	
+	/*Pede para o usuario digitar um numero
+	Busca o numero na lista
+	Se encontrado exclue o elemento e atualiza a quantidade de elementos na lista
+	Se não econtrado exibe "ELEMENTO NAO ENCONTRADO"*/
+
+	int elementoDeletado;
+	bool verificacao = false;
+	NO* atual = primeiro;
+	NO* anterior = NULL;
+	NO* proximoAtual;
+
+	cout << "Digite o elemento a ser deletado: ";
+	cin >> elementoDeletado;
+
+	while (atual != NULL) {
+		if (atual->valor == elementoDeletado) {
+
+			cout << "O elemento escolhido foi apagado. \n";
+
+			if (anterior == NULL) {
+				// primeiro da lista
+				proximoAtual = atual->prox;
+				primeiro = proximoAtual;
+			}
+			else {
+				// nao é o primeiro da lista
+				proximoAtual = atual->prox;
+				anterior->prox = proximoAtual;
+			}
+
+			free(atual);
+			verificacao = true;
+			return;
+		}
+		anterior = atual; // anterior pro atual
+		atual = atual->prox; //atual pro proximo depois dele
+	}
+
+	if (verificacao == false) {
+		cout << "Elemento nao encontrado! \n";
+		return;
+	}
+
 }
 
 void buscarElemento()
 {
-	
+	int elementoBuscado;
+	bool verificacao = false;
+	NO* atual = primeiro;
+
+	cout << "Digite o elemento que você quer buscar: ";
+	cin >> elementoBuscado;
+
+	while (atual != NULL) {
+		if (atual->valor == elementoBuscado) {
+			cout << "Elemento encontrado. \n";
+			verificacao = true;
+			break;
+		}
+
+		atual = atual->prox;
+	}
+
+	if (verificacao == false) {
+		cout << "Elemento nao encontrado! \n";
+	}
 }
-
-
 
 // retorna um ponteiro para o elemento buscado
 // ou NULL se o elemento não estiver na lista
